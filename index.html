@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Codex of Your Becoming</title>
+<style>
+  :root {
+    --gold: #D9B96A;
+    --gold-light: #F2E8CF;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at top, #2A1B4A 0%, #150C28 45%, #0A0714 100%);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    position: relative;
+  }
+  @keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8);} 50% { opacity: 0.9; transform: scale(1.15);} }
+  @keyframes rotateSlow { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
+  .mandala { animation: rotateSlow 90s linear infinite; }
+  .tabBtn { transition: all 0.25s ease; cursor: pointer; }
+  .tabBtn:hover { color: #F2E8CF !important; }
+  ::selection { background: rgba(217,185,106,0.3); }
+
+  #stars { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .star {
+    position: absolute; border-radius: 50%; background: #F0DDAA; opacity: 0.6;
+    box-shadow: 0 0 4px #F0DDAA;
+  }
+
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; position: relative; z-index: 1; }
+
+  .header { text-align: center; margin-bottom: 36px; }
+  .eyebrow-top { font-size: 11px; letter-spacing: 4px; color: #9C8DB5; text-transform: uppercase; margin-bottom: 10px; }
+  h1.title {
+    font-size: 38px; margin: 0; font-weight: 700;
+    background: linear-gradient(120deg, #F2E8CF, #D9B96A, #C9A3E0);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+  }
+  .subdate { color: #7E72A0; font-size: 13px; margin-top: 10px; font-family: monospace; }
+
+  .topgrid { display: grid; grid-template-columns: 320px 1fr; gap: 22px; margin-bottom: 10px; }
+  @media (max-width: 760px) { .topgrid { grid-template-columns: 1fr; } }
+
+  .chartBox {
+    background: linear-gradient(160deg, rgba(38,24,64,0.7), rgba(15,10,28,0.9));
+    border: 1px solid rgba(212,175,90,0.3); border-radius: 16px; padding: 20px;
+    box-shadow: 0 0 40px rgba(155,110,220,0.08);
+  }
+  .chartBox .label {
+    font-size: 11px; letter-spacing: 2px; color: var(--gold); text-align: center;
+    margin-bottom: 10px; text-transform: uppercase;
+  }
+  .legend { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+  .legend span { font-size: 10px; margin: 2px 6px; font-family: monospace; }
+
+  .card {
+    background: linear-gradient(160deg, rgba(38,24,64,0.65), rgba(20,14,38,0.85));
+    border: 1px solid rgba(212,175,90,0.25);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  }
+  .card .eyebrow {
+    font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase;
+    margin-bottom: 6px; font-family: monospace;
+  }
+  .card h3 {
+    margin: 0 0 12px 0; color: var(--gold-light); font-family: Georgia, serif;
+    font-size: 19px; font-weight: 600;
+  }
+  .card .body { color: #CBC0DC; font-size: 14.5px; line-height: 1.7; }
+  .card .body p { margin: 0 0 12px 0; }
+  .card .body p:last-child { margin-bottom: 0; }
+
+  .pill {
+    display: inline-block; padding: 3px 11px; border-radius: 999px; font-size: 11.5px;
+    margin-right: 6px; margin-bottom: 6px; font-family: monospace;
+  }
+
+  .timelineRow {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 14px; border-radius: 8px; margin-bottom: 6px;
+  }
+  .timelineRow .phase { font-size: 13.5px; }
+  .timelineRow .range { color: #7E72A0; font-size: 12px; font-family: monospace; }
+  .timelineRow.active { background: linear-gradient(90deg, rgba(217,185,106,0.18), rgba(217,185,106,0.02)); border: 1px solid rgba(217,185,106,0.4); }
+  .timelineRow:not(.active) { border: 1px solid rgba(255,255,255,0.06); }
+  .timelineRow.active .phase { color: #F2E8CF; font-weight: 700; }
+  .timelineRow:not(.active) .phase { color: #9C8DB5; font-weight: 400; }
+
+  .tabs { display: flex; gap: 4px; margin-top: 8px; margin-bottom: 20px; border-bottom: 1px solid rgba(217,185,106,0.2); flex-wrap: wrap; }
+  .tabBtn { padding: 11px 18px; color: #8A7CA8; border-bottom: 2px solid transparent; font-size: 13.5px; letter-spacing: 0.5px; font-weight: 400; }
+  .tabBtn.active { color: #F2E8CF; border-bottom: 2px solid var(--gold); font-weight: 700; }
+  .tabBtn .glyph { margin-right: 6px; color: var(--gold); }
+
+  .tabPanel { display: none; }
+  .tabPanel.active { display: block; }
+
+  .footer { text-align: center; margin-top: 30px; color: #5C5078; font-size: 11.5px; letter-spacing: 1px; font-family: monospace; }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<svg class="mandala" style="position:absolute; top:-100px; right:-150px; opacity:0.08; width:500px; height:500px; pointer-events:none;" viewBox="0 0 200 200" id="mandalaSvg">
+  <circle cx="100" cy="100" r="40" fill="none" stroke="#D9B96A" stroke-width="0.5" />
+</svg>
+
+<div class="wrap">
+
+  <div class="header">
+    <div class="eyebrow-top">Jyotish Kundali · Architect of Cosmic Destiny</div>
+    <h1 class="title">The Codex of Your Becoming</h1>
+    <div class="subdate">11 Feb 1995 · 9:30 PM IST · Dharmanagar, North Tripura (24.37°N, 92.02°E)</div>
+  </div>
+
+  <div class="topgrid">
+    <div class="chartBox">
+      <div class="label">Rashi Chart (D1) — Lagna Kundali</div>
+      <div id="chartContainer"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="eyebrow">The Foundation</div>
+        <h3>Lagna in Virgo · Moon in Gemini</h3>
+        <div class="body">
+          <p>Your Ascendant rises at <b style="color:#F2E8CF">27.3° Virgo</b>, in the final degrees of <b>Chitra Nakshatra</b> (pada 2, ruled by Mars). This is the "edge-of-sign" Lagna — you carry Virgo's discernment and Libra's diplomacy simultaneously, a soul built to refine raw material into something exquisite. Chitra means "the brilliant jewel-cutter" — you are here to shape the unshaped, to bring form to chaos.</p>
+          <p>Your Moon sits in <b style="color:#F2E8CF">13.6° Gemini</b>, in <b>Ardra Nakshatra</b> (pada 3, ruled by Rahu), placed in your 10th house of career and public life. Ardra — "the moist one," ruled by Rudra, the storm-god — is the nakshatra of destructive renewal. Your emotional nature processes the world through intellectual storms: you feel by thinking, and you transform by breaking things down before rebuilding them stronger.</p>
+          <span class="pill" style="border:1px solid #D9B96A55; color:#D9B96A; background:#D9B96A11;">Asc: Virgo 27.3°</span>
+          <span class="pill" style="border:1px solid #D9B96A55; color:#D9B96A; background:#D9B96A11;">Moon: Gemini 13.6°</span>
+          <span class="pill" style="border:1px solid #E0594A55; color:#E0594A; background:#E0594A11;">Nakshatra: Ardra (Rahu)</span>
+          <span class="pill" style="border:1px solid #7FD9C455; color:#7FD9C4; background:#7FD9C411;">Asc Nakshatra: Chitra</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">Esoteric Soul Purpose</div>
+        <h3>Why Ardra Chose You</h3>
+        <div class="body">
+          <p>Ardra is the nakshatra of Rudra — the howling, weeping storm that clears dead wood so new forest can grow. Souls with Moon in Ardra incarnate to undergo repeated cycles of dissolution and reinvention, usually around the mind, identity, or career. The "Hard Truth": you will outgrow versions of yourself faster than people around you are comfortable with. The "Great Strength": almost no one can match your capacity to turn personal chaos into precise, intelligent restructuring — this is the engineer's nakshatra as much as the mystic's.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div id="tabPanels">
+
+    <div class="tabPanel" data-tab="overview">
+      <div class="card">
+        <div class="eyebrow">The Time Stream</div>
+        <h3>Current Mahadasha: Saturn (2019 – 2038)</h3>
+        <div class="body">
+          <p>You are 7 years into a 19-year <b style="color:#F2E8CF">Saturn Mahadasha</b>. Crucially, Saturn rules both your 5th house (intelligence, creative output) and 6th house (service, competition, daily discipline) — and sits exactly in its own sign, Aquarius, in the 6th house. This is one of the strongest placements possible: Saturn is not punishing you in this dasha, it is promoting you through merit, repetition, and refusal to cut corners.</p>
+          <p style="color:#E0B84D; font-weight:600;">You are right now at a hinge point: Saturn-Ketu antardasha closes on 29 June 2026, and Saturn-Venus antardasha opens immediately after.</p>
+          <div style="margin-top:14px;">
+            <div class="timelineRow"><span class="phase">Saturn – Saturn</span><span class="range">Sep 2019 – Sep 2022</span></div>
+            <div class="timelineRow"><span class="phase">Saturn – Mercury</span><span class="range">Sep 2022 – May 2025</span></div>
+            <div class="timelineRow active"><span class="phase">● Saturn – Ketu (closing now)</span><span class="range">May 2025 – 29 Jun 2026</span></div>
+            <div class="timelineRow active"><span class="phase">● Saturn – Venus (opening)</span><span class="range">29 Jun 2026 – Aug 2029</span></div>
+            <div class="timelineRow"><span class="phase">Saturn – Sun</span><span class="range">Aug 2029 – Aug 2030</span></div>
+            <div class="timelineRow"><span class="phase">Saturn – Moon</span><span class="range">Aug 2030 – Mar 2032</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Next 24 Months</div>
+        <h3>What to Expect: June 2026 – June 2028</h3>
+        <div class="body">
+          <p>The Ketu antardasha you are exiting has been a stripping-down phase — detachment from roles, people, or ambitions that no longer fit, often felt as quiet restlessness or a sense of "going through the motions" in something that once excited you. That phase is ending within days of this reading.</p>
+          <p><b style="color:#F2E8CF">Saturn-Venus (29 Jun 2026 – Aug 2029)</b> is a long, fertile window where Saturn's discipline and Venus's grace finally cooperate. Venus rules your 2nd house (wealth, voice) and 9th house (fortune, higher learning), and sits in your 4th house (home, inner peace, vehicles). Expect: a relationship or financial arrangement that matures into something formal and lasting; income growth tied directly to skill you've already built rather than luck; and an increased pull toward beauty, design, or aesthetics in your work. The first 6–9 months of this period (through roughly Q1 2027) carry the most momentum — use them.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabPanel" data-tab="career">
+      <div class="card">
+        <div class="eyebrow">10th House Analysis</div>
+        <h3>Moon in the 10th House of Karma</h3>
+        <div class="body">
+          <p>Your Moon — emotional core, public mind — sits directly in the 10th house in Gemini. This is a textbook placement for a career built on communication, information systems, or anything requiring rapid mental adaptation: writing, analytics, software, media, teaching, or consulting. Your professional identity is genuinely tied to how you think and articulate, not just what you produce.</p>
+          <p>The 10th lord is Mercury (Gemini's ruler), and Mercury sits in your 5th house conjunct the Sun in Capricorn. This is a powerful confirmation: your intelligence (5th house) is the actual engine of your career (10th house), and it runs through a disciplined, status-conscious sign (Capricorn). You are built for technical or analytical mastery that earns recognition, not just output for its own sake.</p>
+          <span class="pill" style="border:1px solid #7FD9C455; color:#7FD9C4; background:#7FD9C411;">10th lord Mercury → 5th house (Capricorn)</span>
+          <span class="pill" style="border:1px solid #F0A33C55; color:#F0A33C; background:#F0A33C11;">Mercury conjunct Sun</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Saturn's Placement</div>
+        <h3>Saturn: Own Sign, 6th House</h3>
+        <div class="body">
+          <p>Saturn rules both your 5th and 6th houses and sits in its own sign (Aquarius) in the 6th — the house of competition, service, and daily work. This is an exceptionally strong dignified placement. It rewards consistency and punishes shortcuts almost immediately, but it gives durable, hard-won authority once the work is put in. People with this placement often look "unlucky" in their twenties and inevitable by their late thirties.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">D10 Dashamsha Reading</div>
+        <h3>High-Growth Sectors & Leadership Timing</h3>
+        <div class="body">
+          <p>With Mercury–Sun in Capricorn ruling your 10th, and Saturn dignified in the 6th aspecting your work ethic, the Dashamsha signature favors structured, systems-driven technology fields: software engineering, data/AI infrastructure, fintech, enterprise platforms, or any domain where Mercury's logic meets Capricorn's hierarchy — i.e., technical leadership rather than purely creative or sales-driven tracks. Jupiter in your 3rd house (Scorpio) further supports self-directed skill-building, technical writing, or specialized expertise that becomes a competitive moat.</p>
+          <p style="color:#E0B84D; font-weight:600;">"The Great Switch": Saturn-Venus opening 29 June 2026 is your strongest window for a deliberate, upward career move — a new role, a leadership step, or a shift into a more design/value-aligned version of your field — through 2029. A secondary, faster-moving opportunity window appears during Saturn-Venus-Mercury (roughly mid-2027), when Mercury's sub-period activates your 10th lord directly.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabPanel" data-tab="love">
+      <div class="card">
+        <div class="eyebrow">7th House & Venus</div>
+        <h3>Relationship Architecture</h3>
+        <div class="body">
+          <p>Your 7th house of partnership falls in Pisces, ruled by Jupiter. Jupiter sits in your 3rd house (Scorpio) but casts its special aspect forward into the 7th — meaning your committed partnerships are blessed and protected even though the house itself looks "empty." You are drawn to partners who feel expansive, wise, or spiritually oriented, and you tend to idealize early, which is both your gift and your trap.</p>
+          <p>Venus, your significator for love and the ruler of your 2nd (wealth/voice) and 9th (fortune/beliefs) houses, sits in Sagittarius in your 4th house — the home. This placement wants a relationship that feels like a philosophy shared, not just chemistry: partners who expand your worldview and who you can build a literal home and family life with.</p>
+          <span class="pill" style="border:1px solid #F2A9C955; color:#F2A9C9; background:#F2A9C911;">Venus in Sagittarius (4th house)</span>
+          <span class="pill" style="border:1px solid #E9C46A55; color:#E9C46A; background:#E9C46A11;">Jupiter aspects 7th house</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Hard Truths & Great Strengths</div>
+        <h3>The Honest Read</h3>
+        <div class="body">
+          <p><b style="color:#E0594A">Hard Truth:</b> Your Ardra Moon means your emotional weather changes faster than partners can track, and your Mercury-Gemini wiring means you can talk yourself in and out of feelings with dangerous fluency — you may intellectualize your way past real intimacy if you're not careful. You can also idealize new connections (Jupiter's influence) before you've actually tested compatibility.</p>
+          <p><b style="color:#7FD9C4">Great Strength:</b> Once Saturn-Venus engages (June 2026 onward), you gain the rare combination of romantic idealism (Jupiter/Venus) anchored by Saturnine follow-through — this is the dasha sequence under which earlier flings tend to crystallize into something genuinely durable, including marriage-track commitments, especially through 2027–2029.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabPanel" data-tab="health">
+      <div class="card">
+        <div class="eyebrow">Vitality & Constitution</div>
+        <h3>Mars, Saturn, and the Body</h3>
+        <div class="body">
+          <p>Mars sits at the very end of Cancer (29.3°) in your 11th house — a placement that channels physical energy into ambition, gains, and social networks rather than direct confrontation, but at this late "anaretic" degree, it can run hot and impatient, prone to burnout cycles if not given regular outlets.</p>
+          <p>Saturn dignified in the 6th house is actually a protective placement for health — it governs your immune resilience and capacity to recover from illness through routine, but it specifically demands consistency: irregular sleep, skipped meals, or chaotic schedules will manifest as joint, bone, skin, or chronic fatigue issues faster for you than for most people.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Vata-Storm Pattern</div>
+        <h3>The Ardra Nervous System</h3>
+        <div class="body">
+          <p>Your Ardra Moon governs a nervous system that processes stress through mental looping rather than physical symptoms first — anxiety, racing thoughts, and sleep disruption are your earliest warning signs, well before the body shows strain. Treat insomnia or mental restlessness as the first signal to slow down, not a problem to push through.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabPanel" data-tab="wealth">
+      <div class="card">
+        <div class="eyebrow">2nd & 11th House Analysis</div>
+        <h3>Wealth & Gains</h3>
+        <div class="body">
+          <p>Your 2nd house of wealth and accumulated resources falls in Libra, occupied by Rahu. Rahu in the 2nd is a classic "hunger for more" placement — it can produce significant, even unconventional income (through networking, technology, foreign or cross-cultural connections), but it also creates a restless relationship with money: enough is never quite enough, and there can be phases of overspending tied to status or image.</p>
+          <p>Your 11th house of gains is Cancer, ruled by the Moon, which sits powerfully in your 10th house. This is an excellent confirmation: your largest income gains come directly through career visibility and professional reputation, not passive or speculative sources.</p>
+          <span class="pill" style="border:1px solid #5C6B8A55; color:#5C6B8A; background:#5C6B8A11;">Rahu in 2nd house (Libra)</span>
+          <span class="pill" style="border:1px solid #D8D8E855; color:#D8D8E8; background:#D8D8E811;">11th lord Moon → 10th house</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Hard Truths & Great Strengths</div>
+        <h3>The Honest Financial Read</h3>
+        <div class="body">
+          <p><b style="color:#E0594A">Hard Truth:</b> Rahu's influence on your 2nd house means money can feel like it slips through illusion — status purchases, FOMO-driven spending, or chasing a number rather than a feeling of security. Without conscious budgeting, your earning growth in the Saturn dasha can outpace your actual saved wealth.</p>
+          <p><b style="color:#7FD9C4">Great Strength:</b> Venus ruling your 2nd house sitting in the 4th (home/property) strongly favors real estate, fixed assets, and tangible wealth-building as your most reliable long-term store of value — especially once Saturn-Venus opens in June 2026.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">The Upayas</div>
+    <h3>Personalized Remedies for Balance</h3>
+    <div class="body">
+      <p><b style="color:#F2E8CF">For Rahu (2nd house, wealth):</b> Recite the Rahu beej mantra <i>"Om Bhram Bhreem Bhraum Sah Rahave Namah"</i> 18 times on Saturdays. Behaviorally: set a fixed automatic savings transfer the day you're paid, before any spending — this neutralizes Rahu's illusion-driven impulse far better than willpower alone.</p>
+      <p><b style="color:#F2E8CF">For Saturn (Mahadasha lord, 5th/6th houses):</b> Saturn is already dignified, so the remedy is one of cooperation, not correction — light a mustard-oil lamp on Saturdays, and keep one truly inviolable daily routine (sleep time or exercise) as a living offering to Saturn's discipline. A blue sapphire is powerful but should only be worn after consulting a qualified astrologer to confirm compatibility with your full chart.</p>
+      <p><b style="color:#F2E8CF">For the Moon (Ardra, 10th house):</b> Recite <i>"Om Som Somaya Namah"</i> on Mondays, and wear or keep a piece of natural pearl or moonstone if it resonates — more importantly, build one weekly ritual of total mental quiet (no screens, journaling, or walking in nature) to give your storm-Moon a release valve outside of work.</p>
+      <p><b style="color:#F2E8CF">For Venus (entering its antardasha 29 Jun 2026):</b> Wear white or light pink on Fridays, and consciously invest in one aesthetic or creative practice this year — Venus rewards genuine engagement with beauty, not just indulgence.</p>
+    </div>
+  </div>
+
+  <div class="footer">✦ Computed sidereal (Lahiri ayanamsa) · Vimshottari Dasha · For reflection, not prophecy ✦</div>
+
+</div>
+
+<script>
+  // ---- Stars ----
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const left = Math.random() * 100;
+    const top = Math.random() * 100;
+    const size = Math.random() * 1.8 + 0.4;
+    const delay = Math.random() * 6;
+    const dur = 3 + Math.random() * 4;
+    s.style.left = left + '%';
+    s.style.top = top + '%';
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.animation = `twinkle ${dur}s ease-in-out ${delay}s infinite`;
+    starsContainer.appendChild(s);
+  }
+
+  // ---- Mandala ----
+  const mandalaSvg = document.getElementById('mandalaSvg');
+  for (let i = 0; i < 12; i++) {
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', 100);
+    c.setAttribute('cy', 100);
+    c.setAttribute('r', 80);
+    c.setAttribute('fill', 'none');
+    c.setAttribute('stroke', '#D9B96A');
+    c.setAttribute('stroke-width', '0.5');
+    c.setAttribute('transform', `rotate(${i * 30} 100 100)`);
+    mandalaSvg.insertBefore(c, mandalaSvg.firstChild);
+  }
+
+  // ---- North Indian Chart ----
+  const SIGNS = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+  const LAGNA_SIGN_INDEX = 5; // Virgo
+  function houseSign(houseNum) { return SIGNS[(LAGNA_SIGN_INDEX + houseNum - 1) % 12]; }
+
+  const PLANETS_BY_HOUSE = {
+    1: [], 2: ["Ra"], 3: ["Ju"], 4: ["Ve"], 5: ["Su", "Me"],
+    6: ["Sa"], 7: [], 8: ["Ke"], 9: [], 10: ["Mo"], 11: ["Ma"], 12: [],
+  };
+  const PLANET_FULL = { Su:"Sun", Mo:"Moon", Ma:"Mars", Me:"Mercury", Ju:"Jupiter", Ve:"Venus", Sa:"Saturn", Ra:"Rahu", Ke:"Ketu" };
+  const PLANET_COLOR = { Su:"#F0A33C", Mo:"#D8D8E8", Ma:"#E0594A", Me:"#7FD9C4", Ju:"#E9C46A", Ve:"#F2A9C9", Sa:"#8B7CD8", Ra:"#5C6B8A", Ke:"#5C6B8A" };
+
+  function buildChart() {
+    const W = 300, H = 300;
+    const housePos = {
+      1: [150, 65], 2: [80, 35], 3: [35, 80], 4: [80, 150],
+      5: [35, 220], 6: [80, 265], 7: [150, 235], 8: [220, 265],
+      9: [265, 220], 10: [220, 150], 11: [265, 80], 12: [220, 35],
+    };
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('width', '100%');
+    svg.setAttribute('height', '100%');
+    svg.style.overflow = 'visible';
+
+    const defs = document.createElementNS(svgNS, 'defs');
+    const grad = document.createElementNS(svgNS, 'linearGradient');
+    grad.setAttribute('id', 'lineGrad');
+    grad.setAttribute('x1', '0'); grad.setAttribute('y1', '0');
+    grad.setAttribute('x2', '1'); grad.setAttribute('y2', '1');
+    const stop1 = document.createElementNS(svgNS, 'stop');
+    stop1.setAttribute('offset', '0%'); stop1.setAttribute('stop-color', '#D9B96A');
+    const stop2 = document.createElementNS(svgNS, 'stop');
+    stop2.setAttribute('offset', '100%'); stop2.setAttribute('stop-color', '#8B6F3E');
+    grad.appendChild(stop1); grad.appendChild(stop2);
+    defs.appendChild(grad);
+    svg.appendChild(defs);
+
+    function addEl(tag, attrs) {
+      const el = document.createElementNS(svgNS, tag);
+      for (const k in attrs) el.setAttribute(k, attrs[k]);
+      svg.appendChild(el);
+      return el;
+    }
+
+    addEl('rect', { x:0, y:0, width:W, height:H, fill:'none', stroke:'url(#lineGrad)', 'stroke-width':1.5 });
+    addEl('polygon', { points:`${W/2},0 ${W},${H/2} ${W/2},${H} 0,${H/2}`, fill:'none', stroke:'url(#lineGrad)', 'stroke-width':1.5 });
+    addEl('line', { x1:0, y1:0, x2:W/2, y2:H/2, stroke:'url(#lineGrad)', 'stroke-width':1.2 });
+    addEl('line', { x1:W, y1:0, x2:W/2, y2:H/2, stroke:'url(#lineGrad)', 'stroke-width':1.2 });
+    addEl('line', { x1:0, y1:H, x2:W/2, y2:H/2, stroke:'url(#lineGrad)', 'stroke-width':1.2 });
+    addEl('line', { x1:W, y1:H, x2:W/2, y2:H/2, stroke:'url(#lineGrad)', 'stroke-width':1.2 });
+
+    for (const h in housePos) {
+      const num = parseInt(h);
+      const [x, y] = housePos[h];
+      const sign = houseSign(num);
+      const signIdx = SIGNS.indexOf(sign) + 1;
+      const planets = PLANETS_BY_HOUSE[num];
+
+      const g = document.createElementNS(svgNS, 'g');
+      svg.appendChild(g);
+
+      function addText(content, attrs) {
+        const t = document.createElementNS(svgNS, 'text');
+        for (const k in attrs) t.setAttribute(k, attrs[k]);
+        t.textContent = content;
+        g.appendChild(t);
+      }
+
+      addText(signIdx, { x, y: y-22, 'text-anchor':'middle', 'font-size':9, fill:'#9C8758', 'font-family':'serif', 'letter-spacing':'0.5' });
+      addText(sign, { x, y: y-8, 'text-anchor':'middle', 'font-size':8.5, fill:'#C9B074', 'font-family':'serif', 'font-style':'italic' });
+
+      planets.forEach((p, i) => {
+        addText(p, {
+          x: x - (planets.length - 1) * 11 + i * 22,
+          y: y + 14,
+          'text-anchor':'middle',
+          'font-size':13,
+          'font-weight':600,
+          fill: PLANET_COLOR[p],
+          'font-family':'serif',
+        });
+      });
+
+      if (num === 1) {
+        addText('LAGNA', { x, y: y+30, 'text-anchor':'middle', 'font-size':7, fill:'#E0B84D', 'letter-spacing':'1' });
+      }
+    }
+
+    return svg;
+  }
+
+  document.getElementById('chartContainer').appendChild(buildChart());
+
+  const legend = document.getElementById('legend');
+  Object.entries(PLANET_FULL).forEach(([abbr, full]) => {
+    const span = document.createElement('span');
+    span.style.color = PLANET_COLOR[abbr];
+    span.textContent = `${abbr}=${full}`;
+    legend.appendChild(span);
+  });
+
+  // ---- Tabs ----
+  const TABS = [
+    { id: "overview", label: "Overview", glyph: "✦" },
+    { id: "career", label: "Career & Karma", glyph: "⚒" },
+    { id: "love", label: "Love & Union", glyph: "♡" },
+    { id: "health", label: "Health & Vitality", glyph: "✺" },
+    { id: "wealth", label: "Wealth · Artha", glyph: "✪" },
+  ];
+  const tabsEl = document.getElementById('tabs');
+  TABS.forEach((t, i) => {
+    const div = document.createElement('div');
+    div.className = 'tabBtn' + (i === 0 ? ' active' : '');
+    div.dataset.tab = t.id;
+    div.innerHTML = `<span class="glyph">${t.glyph}</span>${t.label}`;
+    div.addEventListener('click', () => setTab(t.id));
+    tabsEl.appendChild(div);
+  });
+
+  function setTab(id) {
+    document.querySelectorAll('.tabBtn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+    document.querySelectorAll('.tabPanel').forEach(p => p.classList.toggle('active', p.dataset.tab === id));
+  }
+  setTab('overview');
+</script>
+
+</body>
+</html>
